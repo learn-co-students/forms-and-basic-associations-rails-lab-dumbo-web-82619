@@ -19,23 +19,23 @@ class Song < ActiveRecord::Base
     self.artist ? self.artist.name : nil
   end
 
-  def notes=(content)
-    note = Note.find_or_create_by(content: content)
-    if !self.notes.include?(note)
-      self.notes << note
-    end
-  end
-
-  # def note_contents=(contents)
-  #   contents.each do |content|
-  #     c = Note.find_or_create_by(content: content)
-  #     if !self.notes.include?(c)
-  #       self.notes << Note.create(content: content)
-  #     end
+  # def notes=(content)
+  #   note = Note.find_or_create_by(content: content)
+  #   if !self.notes.include?(note)
+  #     self.notes << note
   #   end
   # end
 
-  # def note_contents
-  #   self.notes ? self.notes.content : nil
-  # end
+  def note_contents=(contents)
+    contents.each do |content|
+      c = Note.find_or_create_by(content: content)
+      if !self.notes.include?(c)
+        self.notes << Note.create(content: content)
+      end
+    end
+  end
+
+  def note_contents
+    self.notes ? self.notes.map {|note| note.content} : nil
+  end
 end
